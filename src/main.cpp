@@ -4,8 +4,12 @@
 
 void setup() {
 
+  M5.begin();
+  pinMode(PORT_C, INPUT);  // Sets the specified pin to input mode.
+
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  M5.update();
 }
