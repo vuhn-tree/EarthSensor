@@ -7,6 +7,10 @@ void setup() {
   M5.begin();
   pinMode(PORT_C, INPUT);  // Sets the specified pin to input mode.
 
+  M5.Axp.SetLcdVoltage(2600);
+  M5.Lcd.setTextColor(TFT_GREEN, TFT_BLACK);
+  M5.Lcd.drawString("Humidity", 0, 0, 4);
+
 }
 
 void loop() {
