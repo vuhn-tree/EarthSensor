@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <GlobalDefines.h>
+#include <M5Core2.h>
 
 void setup() {
 
