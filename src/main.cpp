@@ -2,6 +2,8 @@
 #include <GlobalDefines.h>
 #include <M5Core2.h>
 
+const int DISP_OFFSET = 25;
+
 void setup() {
 
   M5.begin();
@@ -16,6 +18,12 @@ void setup() {
 void loop() {
 
   M5.update();
+
+  char buf[40];
+
+  const float powerTemp = M5.Axp.GetTempInAXP192();
+  sprintf(buf, "Powr Temp: %2.1fC", powerTemp);
+  M5.Lcd.drawString(buf, 0, DISP_OFFSET, 4);
 
   delay(1000);
 
