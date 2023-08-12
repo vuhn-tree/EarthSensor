@@ -31,7 +31,7 @@ void loop() {
   potVal = analogRead(PORT_C);  // read the value from the sensor.
   const int normalVal = map(potVal, 0, 4096, 0, 255);
   sprintf(buf, "Norm Pot: %03d%", normalVal);
-  M5.Lcd.drawString(buf, 0, DISP_OFFSET * 5, 4);
+  M5.Lcd.drawString(buf, 0, DISP_OFFSET * 3, 4);
 
   const int lcdPotVal = map(potVal, 0, 4096, 2500, 3300);
   M5.Axp.SetLcdVoltage(lcdPotVal);
