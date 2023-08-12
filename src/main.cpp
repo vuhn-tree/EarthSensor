@@ -36,6 +36,9 @@ void loop() {
   sprintf(buf, "Norm Pot: %03d%", normalVal);
   M5.Lcd.drawString(buf, 0, DISP_OFFSET * 5, 4);
 
+  const int lcdPotVal = map(potVal, 0, 4096, 2500, 3300);
+  M5.Axp.SetLcdVoltage(lcdPotVal);
+
   delay(1000);
 
 }
