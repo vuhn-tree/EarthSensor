@@ -3,6 +3,7 @@
 #include <M5Core2.h>
 
 const int DISP_OFFSET = 25;
+int potVal = 0;  // Stores the value currently read by the sensor.
 
 void setup() {
 
