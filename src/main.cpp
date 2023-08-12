@@ -6,18 +6,15 @@ const int DISP_OFFSET = 25;
 int potVal = 0;  // Stores the value currently read by the sensor.
 
 void setup() {
-
   M5.begin();
   pinMode(PORT_C, INPUT);  // Sets the specified pin to input mode.
 
   M5.Axp.SetLcdVoltage(2600);
   M5.Lcd.setTextColor(TFT_GREEN, TFT_BLACK);
   M5.Lcd.drawString("Humidity", 0, 0, 4);
-
 }
 
 void loop() {
-
   M5.update();
 
   char buf[40];
@@ -40,5 +37,4 @@ void loop() {
   M5.Axp.SetLcdVoltage(lcdPotVal);
 
   delay(1000);
-
 }
