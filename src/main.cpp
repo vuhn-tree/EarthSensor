@@ -11,7 +11,7 @@ void setup() {
 
   M5.Axp.SetLcdVoltage(2600);
   M5.Lcd.setTextColor(TFT_GREEN, TFT_BLACK);
-  M5.Lcd.drawString("Humidity", 0, 0, 4);
+  M5.Lcd.drawString("Humidity %", 0, 0, 4);
 }
 
 void loop() {
