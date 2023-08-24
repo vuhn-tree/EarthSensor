@@ -23,15 +23,17 @@ void loop() {
   sprintf(buf, "Powr Temp: %2.1fC", powerTemp);
   M5.Lcd.drawString(buf, 0, DISP_OFFSET, 4);
 
+for (int i = 2; i <= 3; ++i) {
   const float batV = M5.Axp.GetBatVoltage();
   const float batA = M5.Axp.GetBatCurrent();
   sprintf(buf, "Batt.: %2.2fV %2.1fmA", batV, batA);
-  M5.Lcd.drawString(buf, 0, DISP_OFFSET * 2, 4);
+  M5.Lcd.drawString(buf, 0, DISP_OFFSET * i, 4);
 
   potVal = analogRead(PORT_C);  // read the value from the sensor.
   const int normalVal = map(potVal, 0, 4096, 0, 255);
   sprintf(buf, "Norm Pot: %03d%", normalVal);
-  M5.Lcd.drawString(buf, 0, DISP_OFFSET * 3, 4);
+  M5.Lcd.drawString(buf, 0, DISP_OFFSET * i, 4);
+}
 
   const int lcdPotVal = map(potVal, 0, 4096, 2500, 3300);
   M5.Axp.SetLcdVoltage(lcdPotVal);
