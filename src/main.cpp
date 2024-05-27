@@ -33,7 +33,7 @@ void setup() {
   int screenHeight = display.height();
 
   // Define the text
-  const char* text = "Hello, World!";
+  const char* text = "Hello World";
 
   // Calculate the width and height of the text
   int16_t x1, y1;
