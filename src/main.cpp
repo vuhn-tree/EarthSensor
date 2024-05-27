@@ -32,14 +32,16 @@ void loop() {
   // Convert temperature from Celsius to Fahrenheit
   float temperatureF = temperatureC * 9.0 / 5.0 + 32.0;
 
+  // Clear only the value areas to update them
+  M5.Lcd.fillRect(180, 10, 130, 30, BLACK);  // Clear the previous temperature value
+  M5.Lcd.fillRect(180, 40, 130, 30, BLACK);  // Clear the previous humidity value
+
   // Update the temperature value
-  M5.Lcd.fillRect(150, 10, 120, 30, BLACK);  // Clear the previous temperature value
-  M5.Lcd.drawString(String(temperatureF, 2) + " F", 150, 10, 2);
+  M5.Lcd.drawString(String(temperatureF, 2) + " F", 310 - M5.Lcd.textWidth(String(temperatureF, 2) + " F"), 10, 2);
 
   // Update the humidity value
-  M5.Lcd.fillRect(150, 40, 120, 30, BLACK);  // Clear the previous humidity value
-  M5.Lcd.drawString(String(humidity, 2) + " %", 150, 40, 2);
+  M5.Lcd.drawString(String(humidity, 2) + " %", 310 - M5.Lcd.textWidth(String(humidity, 2) + " %"), 40, 2);
 
   // Wait for a second before reading the values again
-  delay(5000);
+  delay(1000);
 }
