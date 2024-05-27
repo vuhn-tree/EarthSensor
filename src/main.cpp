@@ -1,31 +1,40 @@
 #include <M5Core2.h>
 #include <Wire.h>
-#include "Adafruit_Sensor.h"
-#include "Adafruit_BME280.h"
+#include "SHT31.h"
+#include "QMP6988.h"
 
-// Create an instance of the BME280 sensor
-Adafruit_BME280 bme;
+// Create instances for SHT30 and QMP6988 sensors
+SHT31 sht30;
+QMP6988 qmp6988;
 
 void setup() {
   // Initialize the M5Stack Core2
   M5.begin();
   M5.Lcd.setTextSize(2);
 
-  // Initialize the I2C communication on port A
-  Wire.begin(21, 22); // SDA is on pin 21, SCL is on pin 22 for port A
+  // Initialize the I2C communication
+  Wire.begin();
 
-  // Initialize the BME280 sensor
-  if (!bme.begin(0x76)) {
-    M5.Lcd.println("Could not find a valid BME280 sensor, check wiring!");
+  // Initialize the SHT30 sensor
+  if (!sht30.begin(0x44)) {
+    M5.Lcd.println("Could not find a valid SHT30 sensor, check wiring!");
+    while (1);
+  }
+
+  // Initialize the QMP6988 sensor
+  if (!qmp6988.init()) {
+    M5.Lcd.println("Could not find a valid QMP6988 sensor, check wiring!");
     while (1);
   }
 }
 
 void loop() {
-  // Read the values from the sensor
-  float temperature = bme.readTemperature();
-  float humidity = bme.readHumidity();
-  float pressure = bme.readPressure() / 100.0F;
+  // Read the values from the SHT30 sensor
+  float temperature = sht30.readTemperature();
+  float humidity = sht30.readHumidity();
+
+  // Read the value from the QMP6988 sensor
+  float pressure = qmp6988.calcPressure();
 
   // Clear the screen
   M5.Lcd.fillScreen(BLACK);
@@ -38,7 +47,7 @@ void loop() {
   M5.Lcd.printf("Humidity: %.2f %%", humidity);
   
   M5.Lcd.setCursor(10, 70);
-  M5.Lcd.printf("Pressure: %.2f hPa", pressure);
+  M5.Lcd.printf("Pressure: %.2f hPa", pressure / 100.0F);
 
   // Wait for a second before reading the values again
   delay(1000);
