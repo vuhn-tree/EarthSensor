@@ -22,15 +22,18 @@ void setup() {
 
 void loop() {
   // Read the values from the SHT31 sensor
-  float temperature = sht31.readTemperature();
+  float temperatureC = sht31.readTemperature();
   float humidity = sht31.readHumidity();
+
+  // Convert temperature from Celsius to Fahrenheit
+  float temperatureF = temperatureC * 9.0 / 5.0 + 32.0;
 
   // Clear the screen
   M5.Lcd.fillScreen(BLACK);
 
   // Display the sensor values on the screen
   M5.Lcd.setCursor(10, 10);
-  M5.Lcd.printf("Temperature: %.2f C", temperature);
+  M5.Lcd.printf("Temperature: %.2f F", temperatureF);
   
   M5.Lcd.setCursor(10, 40);
   M5.Lcd.printf("Humidity: %.2f %%", humidity);
