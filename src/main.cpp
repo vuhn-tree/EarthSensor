@@ -1,65 +1,45 @@
 #include <M5Core2.h>
 #include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include "Adafruit_Sensor.h"
+#include "Adafruit_BME280.h"
 
-// Define the dimensions of the OLED display
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-
-// Define the OLED I2C address
-#define OLED_I2C_ADDRESS 0x3C
-
-// Define the OLED reset pin (if applicable)
-#define OLED_RESET -1
-
-// Create an OLED display object
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-// Define the text
-const char* text = "Hello World";
+// Create an instance of the BME280 sensor
+Adafruit_BME280 bme;
 
 void setup() {
-  // Initialize M5Stack Core2
+  // Initialize the M5Stack Core2
   M5.begin();
+  M5.Lcd.setTextSize(2);
 
-  // Initialize the OLED display
-  if (!display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADDRESS)) {
-    Serial.println(F("SSD1306 allocation failed"));
-    for (;;);
+  // Initialize the I2C communication
+  Wire.begin();
+
+  // Initialize the BME280 sensor
+  if (!bme.begin(0x76)) {
+    M5.Lcd.println("Could not find a valid BME280 sensor, check wiring!");
+    while (1);
   }
-  display.clearDisplay();
-
-  // Set text color and size
-  display.setTextColor(SSD1306_WHITE);
-  display.setTextSize(1);
 }
 
 void loop() {
-  // Clear the display buffer
-  display.clearDisplay();
+  // Read the values from the sensor
+  float temperature = bme.readTemperature();
+  float humidity = bme.readHumidity();
+  float pressure = bme.readPressure() / 100.0F;
 
-  // Get screen dimensions
-  int screenWidth = display.width();
-  int screenHeight = display.height();
+  // Clear the screen
+  M5.Lcd.fillScreen(BLACK);
 
-  // Calculate the width and height of the text
-  int16_t x1, y1;
-  uint16_t textWidth, textHeight;
-  display.getTextBounds(text, 0, 0, &x1, &y1, &textWidth, &textHeight);
+  // Display the sensor values on the screen
+  M5.Lcd.setCursor(10, 10);
+  M5.Lcd.printf("Temperature: %.2f C", temperature);
+  
+  M5.Lcd.setCursor(10, 40);
+  M5.Lcd.printf("Humidity: %.2f %%", humidity);
+  
+  M5.Lcd.setCursor(10, 70);
+  M5.Lcd.printf("Pressure: %.2f hPa", pressure);
 
-  // Scroll the text horizontally
-  static int16_t x = screenWidth;
-  display.setCursor(x, (screenHeight - textHeight) / 2);
-  display.print(text);
-  display.display();
-
-  // Move text to the left
-  x -= 1;
-  if (x < -textWidth) {
-    x = screenWidth;
-  }
-
-  // Add a small delay to control the speed of the scrolling
-  delay(25);
+  // Wait for a second before reading the values again
+  delay(1000);
 }
