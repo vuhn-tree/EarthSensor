@@ -1,42 +1,19 @@
-#include <Arduino.h>
-#include <GlobalDefines.h>
 #include <M5Core2.h>
 
-const int DISP_OFFSET = 25;
-int potVal = 0;  // Stores the value currently read by the sensor.
-
 void setup() {
+  // Initialize M5Stack Core2
   M5.begin();
-  pinMode(PORT_C, INPUT);  // Sets the specified pin to input mode.
 
-  M5.Axp.SetLcdVoltage(2600);
-  M5.Lcd.setTextColor(TFT_GREEN, TFT_BLACK);
-  M5.Lcd.drawString("Humidity %", 0, 0, 4);
+  // Set up the display
+  M5.Lcd.fillScreen(BLACK);
+  M5.Lcd.setTextColor(WHITE);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(0, 0);
+
+  // Print "Hello, World!" to the screen
+  M5.Lcd.println("Hello, World!");
 }
 
 void loop() {
-  M5.update();
-
-  char buf[40];
-
-  const float powerTemp = M5.Axp.GetTempInAXP192();
-  sprintf(buf, "Powr Temp: %2.1fC", powerTemp);
-  M5.Lcd.drawString(buf, 0, DISP_OFFSET, 4);
-
-for (int i = 2; i <= 3; ++i) {
-  const float batV = M5.Axp.GetBatVoltage();
-  const float batA = M5.Axp.GetBatCurrent();
-  sprintf(buf, "Batt.: %2.2fV %2.1fmA", batV, batA);
-  M5.Lcd.drawString(buf, 0, DISP_OFFSET * i, 4);
-
-  potVal = analogRead(PORT_C);  // read the value from the sensor.
-  const int normalVal = map(potVal, 0, 4096, 0, 255);
-  sprintf(buf, "Norm Pot: %03d%", normalVal);
-  M5.Lcd.drawString(buf, 0, DISP_OFFSET * i, 4);
-}
-
-  const int lcdPotVal = map(potVal, 0, 4096, 2500, 3300);
-  M5.Axp.SetLcdVoltage(lcdPotVal);
-
-  delay(1000);
+  // Nothing to do in the loop
 }
