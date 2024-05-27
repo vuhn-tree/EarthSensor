@@ -15,9 +15,13 @@ void setup() {
 
   // Initialize the SHT31 sensor
   if (!sht31.begin(0x44)) {   // Set to 0x45 for alternate I2C address
-    M5.Lcd.println("Could not find a valid SHT31 sensor, check wiring!");
+    M5.Lcd.drawString("Could not find a valid SHT31 sensor, check wiring!", 10, 10, 2);
     while (1);
   }
+
+  // Print the labels
+  M5.Lcd.drawString("Temperature:", 10, 10, 2);
+  M5.Lcd.drawString("Humidity:", 10, 40, 2);
 }
 
 void loop() {
@@ -28,16 +32,14 @@ void loop() {
   // Convert temperature from Celsius to Fahrenheit
   float temperatureF = temperatureC * 9.0 / 5.0 + 32.0;
 
-  // Clear the screen
-  M5.Lcd.fillScreen(BLACK);
+  // Update the temperature value
+  M5.Lcd.fillRect(150, 10, 120, 30, BLACK);  // Clear the previous temperature value
+  M5.Lcd.drawString(String(temperatureF, 2) + " F", 150, 10, 2);
 
-  // Display the sensor values on the screen
-  M5.Lcd.setCursor(10, 10);
-  M5.Lcd.printf("Temperature: %.2f F", temperatureF);
-  
-  M5.Lcd.setCursor(10, 40);
-  M5.Lcd.printf("Humidity: %.2f %%", humidity);
+  // Update the humidity value
+  M5.Lcd.fillRect(150, 40, 120, 30, BLACK);  // Clear the previous humidity value
+  M5.Lcd.drawString(String(humidity, 2) + " %", 150, 40, 2);
 
   // Wait for a second before reading the values again
-  delay(1000);
+  delay(5000);
 }
