@@ -11,8 +11,8 @@ void setup() {
   M5.begin();
   M5.Lcd.setTextSize(2);
 
-  // Initialize the I2C communication
-  Wire.begin();
+  // Initialize the I2C communication on port A
+  Wire.begin(21, 22); // SDA is on pin 21, SCL is on pin 22 for port A
 
   // Initialize the BME280 sensor
   if (!bme.begin(0x76)) {
