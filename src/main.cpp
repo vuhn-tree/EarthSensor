@@ -1,11 +1,9 @@
 #include <M5Core2.h>
 #include <Wire.h>
-#include "SHT31.h"
-#include "QMP6988.h"
+#include <Adafruit_SHT31.h>
 
-// Create instances for SHT30 and QMP6988 sensors
-SHT31 sht30;
-QMP6988 qmp6988;
+// Create an instance for the SHT31 sensor
+Adafruit_SHT31 sht31 = Adafruit_SHT31();
 
 void setup() {
   // Initialize the M5Stack Core2
@@ -15,26 +13,17 @@ void setup() {
   // Initialize the I2C communication
   Wire.begin();
 
-  // Initialize the SHT30 sensor
-  if (!sht30.begin(0x44)) {
-    M5.Lcd.println("Could not find a valid SHT30 sensor, check wiring!");
-    while (1);
-  }
-
-  // Initialize the QMP6988 sensor
-  if (!qmp6988.init()) {
-    M5.Lcd.println("Could not find a valid QMP6988 sensor, check wiring!");
+  // Initialize the SHT31 sensor
+  if (!sht31.begin(0x44)) {   // Set to 0x45 for alternate I2C address
+    M5.Lcd.println("Could not find a valid SHT31 sensor, check wiring!");
     while (1);
   }
 }
 
 void loop() {
-  // Read the values from the SHT30 sensor
-  float temperature = sht30.readTemperature();
-  float humidity = sht30.readHumidity();
-
-  // Read the value from the QMP6988 sensor
-  float pressure = qmp6988.calcPressure();
+  // Read the values from the SHT31 sensor
+  float temperature = sht31.readTemperature();
+  float humidity = sht31.readHumidity();
 
   // Clear the screen
   M5.Lcd.fillScreen(BLACK);
@@ -45,9 +34,6 @@ void loop() {
   
   M5.Lcd.setCursor(10, 40);
   M5.Lcd.printf("Humidity: %.2f %%", humidity);
-  
-  M5.Lcd.setCursor(10, 70);
-  M5.Lcd.printf("Pressure: %.2f hPa", pressure / 100.0F);
 
   // Wait for a second before reading the values again
   delay(1000);
