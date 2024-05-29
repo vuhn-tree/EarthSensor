@@ -10,6 +10,7 @@ Adafruit_SHT31 sht31 = Adafruit_SHT31();
 const int GRAPH_X = 10;
 const int GRAPH_Y = 100;
 const int GRAPH_HEIGHT = 100;
+const int GRAPH_LINES = 5;
 int graphWidth;
 std::vector<float> temperatureData;
 int dataPointIndex = 0;
@@ -64,8 +65,12 @@ void initializeSystem() {
   graphWidth = M5.Lcd.width() - 2 * GRAPH_X;
   temperatureData.resize(graphWidth, 0);
 
-  // Draw the graph frame
+  // Draw the graph frame and lines
   M5.Lcd.drawRect(GRAPH_X, GRAPH_Y, graphWidth, GRAPH_HEIGHT, WHITE);
+  for (int i = 1; i <= GRAPH_LINES; i++) {
+    int lineY = GRAPH_Y + i * (GRAPH_HEIGHT / (GRAPH_LINES + 1));
+    M5.Lcd.drawLine(GRAPH_X, lineY, GRAPH_X + graphWidth, lineY, DARKGREY);
+  }
 }
 
 void updateDisplay(float temperature, float humidity) {
