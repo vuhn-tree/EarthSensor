@@ -69,7 +69,7 @@ void initializeSystem() {
   M5.Lcd.drawRect(GRAPH_X, GRAPH_Y, graphWidth, GRAPH_HEIGHT, WHITE);
   for (int i = 1; i <= GRAPH_LINES; i++) {
     int lineY = GRAPH_Y + i * (GRAPH_HEIGHT / (GRAPH_LINES + 1));
-    M5.Lcd.drawLine(GRAPH_X, lineY, GRAPH_X + graphWidth, lineY, DARKGREY);
+    M5.Lcd.drawLine(GRAPH_X, lineY, GRAPH_X + graphWidth, lineY, LIGHTGREY);
   }
 }
 
