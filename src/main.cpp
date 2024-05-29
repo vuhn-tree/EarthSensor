@@ -44,7 +44,7 @@ void loop() {
   drawGraph();
 
   // Check if button C is pressed to cycle brightness
-  if (M5.BtnC.wasPressed()) {
+  if (M5.BtnC.isPressed()) {
     cycleBrightness();
   }
 
