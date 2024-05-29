@@ -15,17 +15,24 @@ int graphWidth;
 std::vector<float> temperatureData;
 int dataPointIndex = 0;
 
+// Brightness settings
+const int BRIGHTNESS_LEVELS[] = {64, 128, 192, 255}; // Define brightness levels
+int currentBrightnessIndex = 0;
+
 // Function prototypes
 void initializeSystem();
 void updateDisplay(float temperature, float humidity);
 void drawGraph();
 void updateGraphData(float temperature);
+void cycleBrightness();
 
 void setup() {
   initializeSystem();
 }
 
 void loop() {
+  M5.update(); // Update button states
+
   // Read the values from the SHT31 sensor
   float temperatureC = sht31.readTemperature();
   float humidity = sht31.readHumidity();
@@ -35,6 +42,11 @@ void loop() {
   updateDisplay(temperatureF, humidity);
   updateGraphData(temperatureF);
   drawGraph();
+
+  // Check if button C is pressed to cycle brightness
+  if (M5.BtnC.wasPressed()) {
+    cycleBrightness();
+  }
 
   // Wait for a second before reading the values again
   delay(1000);
@@ -71,6 +83,9 @@ void initializeSystem() {
     int lineY = GRAPH_Y + i * (GRAPH_HEIGHT / (GRAPH_LINES + 1));
     M5.Lcd.drawLine(GRAPH_X, lineY, GRAPH_X + graphWidth, lineY, LIGHTGREY);
   }
+
+  // Set initial brightness
+  M5.Axp.ScreenBreath(BRIGHTNESS_LEVELS[currentBrightnessIndex]);
 }
 
 void updateDisplay(float temperature, float humidity) {
@@ -101,4 +116,9 @@ void drawGraph() {
 void updateGraphData(float temperature) {
   temperatureData[dataPointIndex] = temperature;
   dataPointIndex = (dataPointIndex + 1) % graphWidth;
+}
+
+void cycleBrightness() {
+  currentBrightnessIndex = (currentBrightnessIndex + 1) % (sizeof(BRIGHTNESS_LEVELS) / sizeof(BRIGHTNESS_LEVELS[0]));
+  M5.Axp.ScreenBreath(BRIGHTNESS_LEVELS[currentBrightnessIndex]);
 }
